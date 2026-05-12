@@ -1,3 +1,80 @@
+🔹 1. Launch EC2 Instances
+Go to AWS → EC2 → Launch Instance
+Choose Amazon Linux AMI
+Instance type: t2.micro
+Create key pair
+Configure network (different subnets)
+Add security group → Allow NFS (Port 2049)
+Launch instance (EFS-1)
+Repeat → Launch second instance (EFS-2)
+🔹 2. Create EFS File System
+Go to EFS → Create File System
+Select VPC (default)
+Configure network settings
+Attach security group (NFS enabled)
+Click Create File System
+🔹 3. Connect to EC2 Instances
+Open 2 terminals (for both instances)
+
+Connect using SSH:
+
+ssh -i key.pem ec2-user@<public-ip>
+
+Switch to root:
+
+sudo su
+
+🔹 4. Prepare Instances
+
+Create directory:
+
+mkdir efs
+
+Install EFS utilities:
+
+yum install -y amazon-efs-utils
+
+Verify:
+
+ls
+
+🔹 5. Attach (Mount) EFS
+Go to EFS → Select file system
+Click Attach → Mount via DNS
+Copy mount command
+Run command in both EC2 terminals
+EFS mounted successfully
+🔹 6. Verify Working
+
+Go to mounted directory:
+
+cd efs
+
+Create file in instance 1:
+
+touch file1
+
+Check in instance 2:
+
+ls
+File appears automatically (shared storage)
+🔹 Final Output
+EFS created successfully
+Mounted on multiple EC2 instances
+File sharing works in real-time
+
+
+
+
+
+
+
+
+
+
+
+
+
 WEEK 3 
 1. Go to the Amazon EC2 dashboard
 2. Click on "Launch Instance"
