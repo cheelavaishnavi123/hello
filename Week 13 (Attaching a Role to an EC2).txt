@@ -1,0 +1,20 @@
+Week 13: Attaching a Role to an EC2 Instance.
+
+1: Create the Role: Go to IAM > Roles > Create role.
+2: Select Trusted Entity: Choose AWS Service. Under the "Service or use case" dropdown, select EC2. (This tells AWS: "I trust the EC2 service to use this role").
+3: Add Permissions: Search for and check AmazonS3FullAccess.
+4: Name & Review: Name it (e.g., EC2-S3-ReadOnly-Role) and click Create role--> Role has been created.
+5: Create the ec2 instance and click on that instance and go  to ec2 instance connect->connect using a public ip--> click connect.
+6: run -> aws ec2 describe-instances, aws s3 ls (o/p: unable to locate credentials).
+7: Attach to Instance: Go to the EC2 Dashboard. Select your running instance. Click Actions > Security > Modify IAM role.
+8: Select the role you just created and click Update IAM role.
+9: Verify via CLI:
+SSH/Connect into your EC2 instance. Type aws s3 ls.
+The Result: The command works immediately
+10: run->aws ec2 describe-instances-->(o/p: error bcuz role has only s3 full access)
+
+
+
+
+
+

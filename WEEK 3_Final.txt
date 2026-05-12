@@ -1,0 +1,79 @@
+WEEK 3 
+1. Go to the Amazon EC2 dashboard
+2. Click on "Launch Instance"
+3. Instance Name: EFS1
+4. Choose an Amazon Machine Image (AMI) for Linux
+5. Select instance type: t2.micro
+6. Key Pair: EFS1Key
+7. In Network settings click side Edit button
+8. Don’t change VPC — required — automatically default is chosen
+9. Choose Subnet-1a
+10. In firewall Create security group button is already marked
+11. Scroll down and select Add security group rule
+12. Select Type — NFS
+13. Source type — Anywhere
+14. Launch the instance
+
+15. Creating another instance
+16. Instance Name: EFS2
+17. Choose an Amazon Machine Image (AMI) for Linux
+18. Select instance type: t2.micro
+19. Key Pair: EFS2Key
+20. In Network settings click side Edit button
+21. Don’t change VPC — required — automatically default is chosen
+22. Choose Subnet-1b
+23. In firewall Create security group button is already marked
+24. Scroll down and select Add security group rule
+25. Select Type — NFS
+26. Source type — Anywhere
+27. Launch the instance
+
+28. Now in search type EFS and click it
+29. Click Create file system button
+30. Name — EFSFile1
+31. Don’t change anything click Customize button
+32. Don’t change anything in Step 1 File system settings
+33. Click Next
+34. In Step 2 in mount targets remove zones c, d, e and only keep a, b
+35. In region a:remove security group which says default and select the wizard number (click instances scroll left until u find security group wizard number for EFS1 ) and select that in a
+36. For region b:remove security group which says default and select the wizard number (click instances scroll left until u find security group wizard number for EFS2 ) and select that in b
+37. Click Next
+38. In Step 3 click Next
+39. In Step 4 click Create
+40. File created
+
+41. Now go to Instances
+42. Click tick box for EFS1 and click Connect
+43. Click EC2 Instance Connect, scroll down and click Connect
+44. Now shell will open type commands
+
+sudo su
+mkdir efs
+yum install -y amazon-efs-utils
+ls
+
+45. Go EFS file and select the file created and click View details
+46. Click Attach button at right top corner
+47. Choose Mount via DNS option
+48. Copy the Using the EFS mount helper command
+49. Paste the command in already opened shell after ls command
+50. Now type
+
+cd efs
+touch f1.txt
+ls
+
+51. Now go to Instances
+52. Click tick box for EFS2 and click Connect
+53. Click EC2 Instance Connect, scroll down and click Connect
+54. Now shell will open type commands
+
+sudo su
+mkdir efs
+yum install -y amazon-efs-utils
+ls
+Paste the command of mount
+cd efs
+ls
+
+55. You will find f1.txt created in instance 1

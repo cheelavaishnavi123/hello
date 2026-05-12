@@ -1,0 +1,46 @@
+vpc with bastion server
+create vpc ---rajvpc
+select vpc only  cidr--> 10.0.0.0/16
+create public subnet--publicsubnetforBastion--10.0.1.0/24
+create private subnet--priatesubnetforDatabase--10.0.2.0/24
+2.Create Internet gateway
+after creating attach it to your corresponding vpc i.r rajvpc
+3.creating NAT gateway-->left side NAT gateway, click create NAT gateway and give name, that's it.
+4.Create Route Table public subnet
+ 4.a Create RoutetablePublic
+ 4.b Attach Public Subnet(edit subnet association)
+ 4.c Edit Route: Attach internet gateway
+ in edit route click addroute 0.0.0.0 and select internet gateway from dropdown and save chnages
+5.Create Route Table private subnet
+ 5.a Create RouteTablePrivate
+ 5.b Attach Private Subnet
+ 5.c Edit Route (Add route: Destination :0.0.0.0/0 Target :Nat gateway)
+6.creating privateDatabaseinstance
+ a.keypair
+ b.your vpc
+ c.private subnet i.e privatesubnetforDatabase
+ d.auto assign ip -->disable
+ e.create security group --> add security rule :type:MYSQL/Aurora source type: my ip
+launch instance-->copy private ipv4 address. 
+7.creating publicBastioninstance 
+ a.bastion keypair
+ b.in network settings select your vpc(rajvpc), subnet->pulicsubnet which you created, enable autoassign ip
+ c.create security group  add security rule :type:MYSQL/Aurora  source type: custom :give your private instance  ipv4 address
+
+
+Important:
+-->First copy Public Bastion Instance Public IP address
+-->now open gitbash
+-->cd "Downloads" where ur .pem files are there
+-->scp -i bastion.pem(public bastion instance key file) dbserver.pem(private db server instance keyfile) ubuntu@ <BASTION_PUBLIC_IP>:/home/ubuntu/
+                                        copy paste the pubic bastion instance here 
+
+-->Connect to Bastion Server(go to ec2 instance connect and click connect at the bottom)  (or) ssh -i bastion.pem ubuntu@3.239.225.180(through gitbash u  can copy paste this ,u will connect paste or ec2 instance connect)
+-->verify it by ls (u have to see your private.pem )
+8.Connect from Bastion to Database Server
+-->First execute in Git bash command (in same git bash window (or) ec2 instance connect console):chmod 400 dbserver.pem(private instance key file) 
+-->Copy SSH of Dbserver:ssh -i "dbserver.pem" ubuntu@10.0.2.220
+-->Connection to DB server is successful and ubuntu is now running from dbserver at 10.0.2.220 
+u can see you connected to your private database server
+
+  

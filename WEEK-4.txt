@@ -1,0 +1,39 @@
+WEEK-4
+
+1. Open S3 from the search box
+2. Click on create bucket
+3. Give the bucket a unique name
+4. Click on ACLs enabled
+5. Uncheck the block all public access box, and click on i acknowledge check box
+6. Click on create bucket
+A list of existing buckets appear, choose the created bucket
+7. Go to permissions->ACL -> edit -> click on list and write in everyone(public access) and save
+8. In objects section, click on upload-> add files -> choose a file and upload and after uploaded , click on close 
+9. Click on the uploaded file -> permissions-> acl ->edit -> click on read , read in everyone(public access) and save
+10. Copy object url from the properties section and paste in new tab, you can see the file content
+
+Versioning
+1.Go to YourBucket->properties->bucket versioning->edit->enable->save
+2. Go to objects->upload the same file with some changes again
+3. After uploading click on file -> versions, u can see the versions of file
+
+CROSS-REGION REPLICATION
+
+1.Create another bucket in Oregon region, name destinationBucket
+2. Go to the source bucket in virgina -> management ->replication rules -> create replication rules
+3. Replication name-> academy-crr-rule
+4. Source bucket -> click on apply to all objects in the bucket
+5. In destination -> choose a bucket in this account -> browse s3
+6. IAM role -> choose from existing IAM roles -> LabRole ->Save -> submit
+7. In source region upload a file again, u can see it in destination region
+
+STATIC WEB HOISTING
+1. Create index.html and error.html and upload in source region
+2. Properties -> Static web hoisting -> edit -> enable
+3. In index Document write index.html and in error document write error.html -> save
+4. Copy bucket website endpoint in static web hoisting section 
+5. In new tab paste it and add /index.html or /error.html to view web pages
+--------------------------------------------------------------------------------------------------------
+Whenever a object is uploaded -> go to permissions and edit acl -> everyone(public access) -> read read
+
+After completion -> empty and delete the bucket

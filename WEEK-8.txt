@@ -1,0 +1,109 @@
+WEEK-8
+
+. Open simple notification service
+. go to topics -> create topic
+. Choose type as Standard and write a topic name-> click on create topic
+. Click on create subscription -> choose the current topicARN -> choose protocol as email -> choose endpoint as "YOUR_EMAIL_ADDRESS" and click on create subscription
+" YOU WILL GET EMAIL CONFIRMATION TO SUBSCRIBE TO THE TOPIC, DO IT"
+. Click on topics-> your_topic -> publish message
+. Write a message subject and write the message u want in message body section and click on publish message
+YOU SHOULD SEE THE MESSAGE IN YOUR EMAIL
+.Open S3 in new tab and create a bucket
+. Click on edit in your_topic(sns) -> click on access policy-> add 
+"ArnLike":{
+          "aws:SourceArn":"arn:aws:s3:::'YOUR_BUCKET_NAME'"
+        } (see last in this .txt for clarity)
+below the condition in access policy -> click on save changes
+. go to s3-> buckets-> your bucket-> properties tab-> event notifications-> create event notification-> write a event name like uploadNotification-> click on all object create events checkbox-> click on SNS topic in destination->choose from your sns topics and select your topic-> save changes
+.Upload a file to bucket you can see email notification
+....................................................................
+
+.SQS
+
+. open sqs-> create a queue-> give queue name and click create
+. after queue is created-> click on send and receive messages-> write a message body and click on send message-> then click on poll for messages, we can see received message
+. Next create a subscription for sqs in sns
+. click on create subscription in sns-> select protocol as amazon sqs and select the active endpoint and click create
+. upload a file to bucket , and u can see an email, and if u poll for messages in queue u can see in it
+
+----------------------------------------------------
+.lambda function
+
+Open lambda in new tab
+.click on create function-> name as SQSConsumerFunction-> Runtime as python 3.14-> choose custom execution role as labRole and click create
+. Create a trigger-> choose trigger configuration as sqs and choose an active sqs endpoint-> create
+in below click code 
+. Change code in code section to:
+
+import json
+
+def lambda_handler(event, context):
+    # TODO implement
+    for record in event['Records']:
+        print("Message from lambda")
+        print(record['body'])
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
+
+and click on deploy
+and upload a file to bucket and check ur mail
+
+
+
+deletion steps
+Delete Lambda Function
+Delete SQS Queue
+Go to Amazon SNS
+ First remove subscriptions:
+ Open your topic
+ Go to Subscriptions
+ Delete:
+ Email subscription
+ SQS subscription
+ Then delete topic
+Delete S3 Bucket- empty and delete
+
+
+
+
+
+{
+  "Version": "2008-10-17",
+  "Id": "__default_policy_ID",
+  "Statement": [
+    {
+      "Sid": "__default_statement_ID",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": [
+        "SNS:Publish",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:DeleteTopic",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:AddPermission",
+        "SNS:Subscribe"
+      ],
+      "Resource": "arn:aws:sns:us-east-1:906398317336:Topic-1",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceAccount": "906398317336"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:s3:::abcd369bucet"
+        }
+      }
+    }
+  ]
+}
+
+
+
+
+
+

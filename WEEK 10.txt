@@ -1,0 +1,122 @@
+WEEK 10
+
+USING MAVEN GIT REPO
+1)create a folder for week10
+2)open git bash 
+   cd "path of a folder to week10"
+   git init
+   git clone https://github.com/anujyog1/flightrepo.git
+   cd flightrepo
+   ls
+   cd target
+   ls
+
+3) search Elatic Beanstalk- click it
+4) Click Create application
+5)Step 1-Configure environment
+  environment tier- web server environment*
+  application name- MavenFlight3
+
+  Platform- Tomcat
+  Platform branch: Tomcat 11 with Corretto 25 running on 64bit Amazon Linux 2023
+  Platform version: 5.12.0 (Recommended)
+
+  Application code
+  Upload your code
+  Version label- MavenFlight
+  Local file
+  Choose file- bookflight.war
+6)Step 2-Configuring Service Access
+  Service role: LabRole
+  EC2 instance profile: LabInstanceProfile
+  EC2 key pair: EFSkey2 (any key)
+7)Step 3-Setting up Network
+  VPC: vpc-cdf996b7 (My Network)
+  Public IP: Enable 
+  Instance subnets select 
+   us-east-1a
+   us-east-1b
+   us-east-1c
+   us-east-1d
+   us-east-1e
+   us-east-1f
+8)Step 4-Configure instance traffic
+  Root volume: (Container default)
+  Monitoring interval: 5 minute
+  IMDSv1: Disable 
+
+9) Capacity 
+   Environment type: Load balanced 
+   Min instances: 2 
+   Max instances: 5 
+   On-Demand instances
+   x86_64
+   Instances types: 1) t2.small
+                    2) t2.micro
+   next next create->takes few minutes
+   Environemnt launched successfully
+   Copy domain URL
+   Paste in google
+
+10) Go to EC2->instances u will see-> 2 instances are automatically created
+    1 load balancer automatically created
+    1 Auto Scaling group automatically created
+
+
+
+USING .PHP
+1) Prepare Your Application
+	Make sure your PHP file index.php with content as below
+        <?php
+        // Hello World PHP Project
+        echo "Hello World";
+        ?>
+
+2) Zip Your Project
+	Store this file “index.php” in folder “demo” and make its zip file as “demo.zip”
+
+3)Go to AWS Console-> search elastic beanstalk->click->create application
+4)It will show create environemnt, go to applications in left console->create application
+  fill the application name -> 3-web-app->click create
+5)Click on Create Environment
+ Step 1: Configure environment
+      Environment → Web server environment
+      Application name-> 3-web-app
+      Platform** → Scroll down and choose your language (PHP.)
+      Keep all default and Click on Next
+ Step 2:
+  Configure service access	
+	Service role: LabRole
+	EC2 instance profile: LaInstanceProfile
+	EC2 key pair: Already create  key
+	Press Next
+ Step 3: Set up networking, database, and tags - optional 
+         Keep all default-skip to review 
+         Scroll down and click
+6)Wait for some time 
+  At Health -> Ok in Green must appear
+  wait unitl enivironment successfully launched
+7)Click the domain url-> website appears
+8)Deploy your code 
+	Click on **Upload and Deploy**
+	Choose **Upload your code**
+	Select your `.zip` file i.e. “demo.zip” created in Step 2
+9)Click the domain- u will get 404 forbidden
+  then add /demo at the url in the google
+  eg: Yogita-web-app-env.eba-kp25kxcv.us-east-1.elasticbeanstalk.com 
+  add Yogita-web-app-env.eba-kp25kxcv.us-east-1.elasticbeanstalk.com/demo    (/demo at end of path)
+10)Check Logs (if error)
+   If something fails:
+	Go to **Elastic Beanstalk Dashboard**
+	Click your environment
+	Click **Logs → Request logs**
+	Here you specify Last 100 lines. 
+	The download the file appear, and you can open it and see for errors.
+11)Terminate all
+   Environments-> Actions-> Terminate Environment
+   Click on Application, select Action and Delete Application
+
+
+
+
+

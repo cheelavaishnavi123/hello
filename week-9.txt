@@ -1,0 +1,69 @@
+Instances creation:
+1. webserver-1, amazon inux, t2.micro, create key pair, allow https & http -> launch
+2. webserver-2 - same creation
+
+Connecting instances:
+1. select instance-> connect -> (aws terminal) -> enter these
+  sudo su
+yum update -y
+yum install httpd -y
+systemctl start httpd
+systemctl enable httpd
+echo "This is server 1" var/www/html/index.html 
+2. for webserver-2 -> total same except thi 
+echo "This is server 2" var/www/html/index.html
+
+copy public ip's and open them
+
+Security Groups creation:
+(goto security groups on the left panel)
+grp name - lb-sg
+description - anything u want to
+VPC - default (akda okte osthdhi ig)
+
+Add inbound rules
+SSH -> myip
+http -> anywhere
+
+Add outbound
+http -> anywhere
+https -> anywhere 
+
+Load balancer:
+(left panel - load balancer)(kotha tabs lo open chskondi)
+name - my-alb
+select az of instances  (if both are in same az then select any other az) 
+security group - lb-sg
+(now we need target group) 
+(left panel - target group)
+Create target group
+web-servers-tg -> next
+select all instances -> include pending as below -> next
+create
+now refresh the target groups in load balancer creation
+you'll get the created target group there select that
+create load balancer
+Now goto-> web-servers-tg -> wait for instances health checkup 
+they should be healthy 
+(if not delete target group and load balancer and create it again make sure every step is present).
+
+now load balancer-> my-alb -> copy dns -> paste it in url -> you'll get this is server-1 / -2 
+
+AMI creation:
+select a instance -> actions -> image & templates -> create image
+ws-ami -> create
+launch templates -> create -> Template-name -> My amis -> owned by me ->slecet ws-ami -> t2.micro -> create key pair pem -> select existing security group -> lb-sg -> create
+
+Auto scaling Group Creation:
+
+search for ASG(auto scaling groups)
+
+create -> asg-ws ->  select created template -> next
+select all azs-> next
+choose existing load balancer -> select creted one -> next
+desired capacity -2 -> max - 4 -> next ... -> create
+
+Now copy dns again and refresh the tab automatically few instances will be created 
+
+Now delete any instance web-server and refresh the tab again with dns name -> affect...
+THE END

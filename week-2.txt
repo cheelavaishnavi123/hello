@@ -1,0 +1,149 @@
+CREATE AND ATTACH EBS VOLUME TO EC2 INSTANCE.
+
+1. CREATE VOLUME
+
+create ec2 (ubuntu) instance.
+
+Open the EC2 Dashboard.
+From the left-hand menu, select Volumes under Elastic Block Store (EBS).
+Click Create Volume.
+Choose:
+Volume type (gp3/gp2)
+Size of the volume
+*Availability Zone (must be the same as the EC2 instance)
+Click Create Volume.
+
+2. ATTACH VOLUME
+
+select volume -> click Actions -> Attach volume -> select EC2 instance
+device name (/dev/xvdbf) -> click Attach
+
+3. Verify 
+
+Go to EC2 instacnce (meaning select that) in the details(storage) volume created will appear 
+   (or)
+select instance -> connect(using SSH) or just (EC2 Connect instance) click on the connect -> in the terminal type-  lsblk (attached volume displays).
+
+4. Modify volume(scaling)
+
+select volume -> click modify volume -> increase size -> modify
+
+*( to change instance type dont need to stop the instance ).
+
+
+MOUNT EBS VOLUME
+
+(before volume created and attached but to access the files inside volume or block need to mount the volume to instance)
+
+EC2 instance(Linux or ubuntu -mentioned)
+create volume with device name(/dev/xvdbf)
+attach volume
+connect (directly from ec2 instance connect)
+
+all volumes
+>lsblk
+
+file system
+> lsblk -fs
+
+Create partition new volume:
+
+(ikda basic ga device name m pettinamo adhi ravali lsblk kottinappudu but apdapudu mari epdo thlvdhu but vere names kuda osthy disk ki, u can identify the created one with the volume size)
+
+
+sudo fdisk /dev/<name_of_disk_in_lsblk>
+then it displays
+Command (m for help): 
+
+if failed -check AZ, name in fdisk/dev/..., place "sudo" pakka
+
+then type these
+> m => help menu
+> n => new partition
+> p => primary partition
+> enter => default partition number
+> "    => default first sector
+>  "   => default last sector
+> w => write changes and exit (basically manam m chyodhu ikda just exit aithdhi anthe fdisk nundi)
+
+> sudo partprobe (notifies the kernel that changes has made)
+
+(iPDU mana partition aineyi check chskovali ante)
+
+>lsblk -fs   xvdbf1 or nvme1n1 ani osthdhi
+
+iPDU format chskovali mana block storage into file system ga:
+
+>sudo mkfs.xfs /dev/"partitioned_name" (quotes m pettakandi just name) /dev/xvdbf1 or /dev/nvme1n1p1 (*slashes are imp)
+
+> lsblk -fs  (UUID of the volume/disk appears) copy that
+
+> sudo mkdir /mnt/siri  (creates a directory to where we gonna mount the volume)
+
+> sudo mount /dev/nvme1n1p1 /mnt/siri(any_name) 
+
+> df -h (chusthe mike rdhm aithdhi (details displayed))
+> sudo nano /etc/fstab 
+
+UUID=<UUID-value> /mnt/siri   xfs   defaults,nofail   0   0
+(* mind the spaces only single space between *)
+(* no space around =)
+add this line at the end of that file and replace the UUID-value with the copied uuid of the volume or disk that displayed in lsblk -fs
+
+
+since volume is mounted on /mnt/siri 
+> cd /mnt/siri
+>ls (m raavu)
+> sudo nano f1.txt (nachindhi raskolli)
+
+> cd ..
+> cd ..
+ubuntu....:/$ mount -a (** check the directory careful with this)
+
+(m aina errors unte chupisthdhi)
+
+Verify persistence:
+
+1. reboot the instance
+
+lsblk -fs
+cd /mnt/siri
+ls
+sudo nano f1.txt
+ (data m change avvadhu)
+
+2. detach and attach volume to new instance
+first detach the volume which is attached
+create new instance (ubuntu) -> attch vol -> connect
+
+lsblk -fs
+
+sudo mkdir /mnt/any_name(new name)
+
+sudo mount /dev/partition_name /mnt/any_name
+
+cd /mnt/any_name
+ls
+sudo nano f1.txt
+ (data m change avvadhu)
+
+ATTACHING VOLUMES ACROSS REGIONS.
+
+1. create snapshot
+
+create volume -> attach to inst
+
+select volume -> actions -> create snapshot -> description& tags (Name  ,  any_name) -> create
+
+Under EBS(below volumes) snapshots click on that
+select created snapshot -> actions -> copy snpshot -> set destn region to us-west-2 -> tags -> copy snapshot
+
+Go to Oregon region -> in snapshots -> select snapshot -> actions -> create volume from snapshot -> volume created -> create EC2 instance -> attach volume to ec2 instance.
+
+
+
+
+
+
+
+

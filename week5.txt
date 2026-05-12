@@ -1,0 +1,60 @@
+Week 5: VPC Creation and Ec2 Instance Connection
+🔹 Step 1: Create the VPC
+1.	search VPC
+2.	Click Create VPC & Choose VPC only
+4.	Enter:
+	Name: Custom-VPC
+	IPv4 CIDR block: e.g. 10.0.0.0/16
+5.	Click Create VPC
+🔹 Step 2: Create Subnets (Public & Private)
+Create subnets in same Availability Zones for high availability.
+•	Public Subnet: 10.0.1.0/24 (AZ-A)
+•	Private Subnet: 10.0.2.0/24 (AZ-A)
+Steps:
+1.	Go to Subnets → Create subnet
+2.	Select your VPC - Choose AZ - Enter CIDR - Create subnet
+🔹 Step 3: Create an Internet Gateway (IGW)
+1.	Go to Internet Gateways - Click Create - Name it -Attach your VPC
+🔹 Step 4: Create Route Tables
+You need separate route tables for public and private subnets.
+1.	Go to Route Tables → Create 2 route tables - Select VPC 
+create publicroutetable & privateroutetable
+Next select publicroutetable and click edit subnet associations and select public subnet and save
+select pvtroutetable and click edit subnet associations and select pvt subnet and save
+-----------------------------------
+now select publicroutetable and click edit routes
+	Add route:
+o	Destination: 0.0.0.0/0
+o	Target: Internet Gateway
+o	Below internet gateway select your gateway and save
+🔹 Step 5: Enable Auto-Assign Public IP (Public Subnet)
+1.	Select Public Subnet
+2.	Go to Edit subnet settings
+3.	Enable Auto-assign public IPv4 address
+🔹 Step 6: Launch EC2 Instances
+•	Public EC2 → Public subnet
+•	Publicinst->ubuntu ami (t2 micro)-> create key pair -> network settings edit -> select vpc -> select public subnet -> auto-assign public IP enable -> launch
+•	Private EC2 → Private subnet
+•	Pvtinst->ubuntu ami (t2 micro)-> create key pair -> network settings edit -> select vpc -> select pvt subnet -> auto-assign public IP disable -> launch
+Step 7: Configure Security Groups
+    On left go to security groups 
+1.	Open launch wizard 11 security group name and click on security group id
+2.	edit inbound rules:
+o	HTTP (80) 0.0.0.0/0
+o	HTTPS (443) 0.0.0.0/0
+o	SSH (22) 0.0.0.0/0 and save
+3.	Open launch wizard 12 same as above
+4.	Edit inbound rules:
+   Ssh 0.0.0.0/0
+   Custom icmp-ipv4 0.0.0.0/0 and save
+COPY pvt ipv4 address of pvt instance
+Open publicinst ->connect ->ssh client ->copy ssh command 
+Open powershell -> cd directory (where pem file exists) -> paste ssh -> ubuntu console
+In console type-> ping copied pvt address
+Delete instances -> delete vpc (automatically internet gateway and route tables will be deleted) 
+🔹 Step 8: Test the Setup
+•	Public EC2 → Internet access ✔
+•	Private EC2 → Internet via NAT ✔
+•	Private EC2 → No direct inbound access ✔
+
+

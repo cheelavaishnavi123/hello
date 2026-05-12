@@ -1,0 +1,88 @@
+Week-1:
+1) Creation of Amazon EC2 Instances (Linux / Ubuntu) and Establishing Secure Connections Using SSH from Local Machine using .pem 
+* open aws account, go to modules, then click on  Launch AWS Academy Learner Lab--> start lab-->turns green color.
+* click on green dot., then click on Ec2, launch instance.
+* Write the name of the instance, then select ubuntu, instance type(your wish), create key pair--> give a name, (.pem), create.
+* Then a keypair will be downloaded, create a folder(AWS) on desktop and save it, then click on launch instance.
+* Successful, Click on instance, Select instance and then click on Connect.
+* Open Powershell in administrative mode and navigate to that path AWS folder and type cd "C:\Users\User\Desktop\AWS"
+* Go to SSH client and copy the command ssh, and  paste  the   ssh -i command from the aws console.
+* You are now connected to your Ubuntu EC2 instance using SSH and .pem i.e. local machine connected to server of EC2instance. To verify connection,
+Run: whoami
+Output should be: ubuntu.
+
+2) Creation of Amazon EC2 Instances ( Ubuntu) and Establishing  Connections Using putty.
+* Create the instance and give name, select ubuntu, instance type(your wish), Create key pair so click on .ppk, keep downloaded keypair(.ppk) in AWS folder, Launch instance, Successful.
+* Click on Security and then security groups, Click on Edit inbound rule, See SSH is there with Port 22 and press on Save rule.
+* In search bar, which is on the desktop, type putty (or), open the putty.exe which you've downloaded and kept in AWS folder.
+* copy public IPv4 address of your instance, Paste it in Putty at Host Name (or Ip address) and at Session type save as (give any name)
+* In PuTTY left menu, go to:
+Connection → SSH → Auth → Credentials
+1. Click Browse
+2. Select your .ppk file
+3. Click Open
+* Next click on Accept, Next enter user name at login as: ubuntu 
+* VERIFY CONNECTION
+Run:
+whoami
+Output should be:
+Ubuntu
+
+3) Connect EC2 Ubuntu Instance Using PuTTY (Windows) ---for PEM KEYPAIR
+Prerequisites: Downloaded putty.exe, puttygen.exe --> both should be kept in AWS folder.
+* Create the instance, give any name, select ubuntu, instance type(ur wish), Create key pair so click on .pem, create, keep the downloaded keypair in AWS folder, then launch the instance--> success.
+* Select the instance and click connect.
+[Convert .pem to .ppk using PuTTYgen As PuTTY cannot use .pem directly]
+* open the puttygen.exe from your AWS folder, Click Load, Select your .pem file (change file type to All Files), Click Open
+* Click Save private key.
+* Save with name convetedpemTOppk in folder AWS, SAVE.
+* Conversion done.
+* Close it.
+* Go to: AWS Console → EC2 → Instances---CONNECT –COPY DNS NAME / <PUBLIC-IP>.
+* Open putty, •	Host Name (or IP address): dns name (or) public ip address.(Saved sessions if you want to save, it is your wish, not mandatory)
+* Go to: Connection → SSH → Auth → Credentials
+* Then click on browse, select the convetedpemTOppk.ppk file, open.
+* Click on open, click on accept, Connected
+* Login as ubuntu, for verification: whoami, pwd.
+
+4) Connecting to EC2 Using AWS CloudShell:
+* Create the EC2 instance, ubuntu, using a key pair (.pem).--> Launch--> Successful
+* In the search bar, in AWS, type cloudShell and click here
+* Once CloudShell opens, go to AWS Services → EC2, Select your EC2 instance and click Connect, Copy the ssh -i command .
+* Paste the command in CloudShell and try to run it.
+❌ It will fail with an error like:
+“key pair is not available / no such file or directory”
+(because the key file is not yet in CloudShell)
+It will ask "Are you sure you want to continue connecting(yes/no)?" Type---> no.
+* Now, in CloudShell, click on the “+” (Actions) icon on the right side to upload .pem file
+* Select Upload file and upload the key pair (.pem) from your local machine
+* After upload, copy the ssh -i command again from EC2 → Connect → SSH client
+* Paste and execute the command in CloudShell.
+* It will ask "Are you sure you want to continue connecting(yes/no)?" Type---> yes
+* You are now successfully connected to the EC2 instance, type docker ps, it will show Container Id, image..etc.
+
+5) Create Windows EC2 Instance and Connect via RDP:
+* Launch a Windows EC2 Instance
+Login to your AWS Management Console.
+Navigate to EC2 → Instances → Launch Instance.
+Select an Amazon Machine Image (AMI).
+Choose a Windows Server AMI (e.g., Windows Server 2019 or 2022).
+* create keypair(.pem), launch instance, Click on Security and then security groups, Click on Edit inbound rule-->Ensure RDP port 3389 is allowed.
+* Select your instance → Click Connect → RDP Client. Click Get Password.
+* Upload your Key Pair (.pem) file. Click Decrypt Password
+* Copy the Administrator password (e.g: VyXCbbW1TGJ9=Q8$e%-OW9CcG7nKOl88)
+* On your local Windows machine, open Remote Desktop Connection.
+* In the Computer field, enter the Public DNS or IP address of the EC2 instance.
+* Click Connect.
+In the login prompt:
+Username: Administrator
+Password: Paste the decrypted password.
+Click OK.
+* Your Windows EC2 instance desktop should appear.
+* You can now use it as a normal Windows machine.
+
+
+
+
+
+

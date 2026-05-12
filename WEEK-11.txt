@@ -1,0 +1,100 @@
+WEEK-11—Amazon LEX
+
+Step 1: Open Amazon Lex
+1.Login to AWS Console
+2.Search Amazon Lex
+3.Click Create bot
+Step 2: Create Bot
+1.Choose:
+Create a blank bot
+2.Enter:
+Bot name: HotelBookingBot
+3.IAM role → Create new role
+4.Remaining defaultnext
+5.Language: English
+6.Voice (optional)
+7.Click Done
+Step 3: Create Intent
+1.Go to Intents
+2.Name: BookHotel
+3.Click Create
+Step 4: Add Sample Utterances
+Add user sentences (how user talks):
+I want to book a hotel
+Book a room
+Reserve hotel
+I need a room
+Step 5: Create Slots (User Inputs)
+Slots collect user information.
+Add Slot
+1.Click Add slot
+2.Fill:
+Slot name: age
+Slot type: AMAZON.Number
+Prompt: Which is your age?
+Mark as Required
+Steps:
+1.Go to Intent → Slots -> under Advance options
+2.Scroll to Slot capture: success response ->Conditional branching
+3.Click Add condition
+Example:
+Condition:
+ If {age} < 18
+Response:
+Your not eligible for booking?
+
+Slot name: location
+Slot type: AMAZON.City
+oPrompt: Which city do you want?
+
+Slot name: checkin 
+Slot type: AMAZON.Date 
+Prompt:
+ "What is your check-in date?" 
+
+Slot name: nights 
+Slot type: AMAZON.Number 
+Prompt:
+ "How many nights will you stay?" 
+
+Step 7: Create Custom Slot Type
+
+Save intent
+Click on Back to intents
+If you want custom values:
+1.Go to Slot Types
+2.Click Add slot type ->add blank slot type
+3.Name: RoomType
+Add values:
+Single
+Double
+Suite
+Save slot type
+Now use this in slot: go back to intent
+Slot name: RoomType
+Slot type: RoomType
+prompt: What type of room do you want?
+
+ Step 9: Add Response Cards (Card Groups)
+ Used for buttons (quick replies)
+Steps:
+1.Go to slot prompts -> more prompt options
+2.Click Add -> add card groups
+Example:
+Card Title: Select Room Type
+click on add Buttons:
+Single → "Single"
+Double → "Double"
+Suite → "Suite"
+
+ Step 10: Configure Responses
+Initial Response:
+Welcome to Hotel Booking! What is your name?
+Confirmation:
+Do you want to confirm booking in {location} for {nights} nights?
+
+ Step 11: Build & Test
+1.Click Build
+2.Use Test chatbot panel
+3.Try:
+Book a hotel

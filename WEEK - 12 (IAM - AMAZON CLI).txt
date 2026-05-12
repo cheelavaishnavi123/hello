@@ -1,0 +1,28 @@
+WEEK - 12 (IAM - AMAZON CLI)
+
+1: Log in to the AWS Management Console as the Root User
+2: Search for IAM, Navigate to Users and click Create user.
+3: User Details: Enter a name (e.g., S3_Specialist). Check the box for "Provide user access to the AWS Management Console." – custom password--> create your own password. Uncheck "users must create new password at next sign in". Click next.
+4: Set Permissions: Select "Attach policies directly." Search for and select AmazonS3FullAccess. Click next.
+5: Review everything and click on create user.
+6: User is created and download .csv file and click on return to users list.
+7: Copy your 12-digit Account ID (found in the top-right dropdown or the .csv) and Sign Out.
+8: go to the url which is there in the .csv file (or) aws sign in page and click on iam user.
+9: type acc_id, iam username, password and click sign in.
+10: search ec2 and go to dashboard , you'll see all red color API errors.This proves the user is restricted.
+11: Then navigate to s3, and click create bucket--> general purpose-->global namespace-->bucket name(e.g: iamuser-s3-bucket)--> remaining keep everything as it is-->click create bucket-->bucket is created successfully.
+12: Then signout, and again sign in using root user email-->type your root email and password.
+13: Navigate to iam->users->created user->click on that user and go to security credentials tab. Scroll to Access keys and click Create access key.
+14: Select Command Line Interface (CLI). Acknowledge the warning and click Next. Give the description tag(optional), click create access key--> download .csv file(it contains ur access key id and secret access key).
+15: : Install the AWS CLI Tool from google on your computer (or) https://awscli.amazonaws.com/AWSCLIV2.msi.
+16: then open powershell->admin mode-> Type "aws configure" and press Enter.
+17: Provide the following from your .csv: 
+Access Key ID:
+Secret Access Key:
+Default region: (e.g., ap-south-1)
+Default output: json.
+18: type these commands one by one:
+* aws ec2 describe-instances (o/p: Access Denied error)
+* aws s3 ls (o/p: list your buckets)
+* aws s3 mb s3://your-unique-bucket-name. (o/p: Success)
+19: go to s3->buckets->then new bucket which you created will appear.

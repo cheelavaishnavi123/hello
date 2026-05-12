@@ -1,0 +1,53 @@
+WEEK - 7 SIMPLE
+1) S3 BUCKET
+2) DYNAMODB TABLE
+3) LAMBDA FUNCTION
+ 
+add s3 trigger to function so that when anything is uploaded in s3 it will trigger function and add it in table.
+
+step-1 create s3 bucket:
+- search s3 - give unique name - enable bucket versioning - create
+step-2 create table
+- search dynamodb - give any name - partition key : unique - create
+step-3 function
+- search lambda - create function - any name - runtime:python 3.14 -
+important ::: change/custom execution role - select labrole - create 
+
+now make connection s3 to function
+ 
+in function, go down u will get python code, add this:
+import boto3
+from uuid import uuid4
+
+def lambda_handler(event, context):
+    s3 = boto3.client("s3")
+    dynamodb = boto3.resource('dynamodb')
+
+    for record in event['Records']:
+        bucket_name = record['s3']['bucket']['name']
+        object_key = record['s3']['object']['key']
+        size = record['s3']['object'].get('size', -1)
+        event_name = record['eventName']
+        event_time = record['eventTime']
+
+        dynamoTable = dynamodb.Table('ur-table-name')
+
+        dynamoTable.put_item(
+            Item={
+                'unique': str(uuid4()),
+                'Bucket': bucket_name,
+                'Object': object_key,
+                'Size': size,
+                'Event': event_name,
+                'EventTime': event_time
+            }
+        )
+
+click deploy on the left to update.
+add trigger and select s3 and ur bucket name
+last step - upload anything in s3 bucket
+go to dynamodb tab, click explore items on the left
+you will see items returned----output
+
+note: after uploading in s3 it takes time to add in the table, output is not fast.
+wait 1-2 mins, don't panic.  
