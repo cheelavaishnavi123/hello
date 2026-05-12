@@ -1,3 +1,64 @@
+✍️ AWS Elastic Beanstalk Write-Up
+🔹 1. Open Elastic Beanstalk
+Login to AWS Console
+Go to Elastic Beanstalk
+Click Create Application
+🔹 2. Create Application
+Enter Application Name
+Add description (optional)
+Click Create
+🔹 3. Create Environment
+Click Create Environment
+Select Web Server Environment
+Click Select
+🔹 4. Configure Environment
+Enter Environment Name
+Choose Platform:
+Java / Node.js / Python
+Upload application code (.war / .zip)
+🔹 5. Configure Service Access
+Select Service Role (LabRole)
+Select EC2 Instance Profile
+Choose Key Pair (optional)
+🔹 6. Configure Network
+Select VPC
+Select subnets
+Enable Public IP
+🔹 7. Instance & Scaling Setup
+Choose instance type (t2.micro)
+Set:
+Min instances: 1
+Max instances: 2
+Enable Load Balancer
+🔹 8. Review & Create
+Click Review
+Click Create
+Wait for deployment
+🔹 9. Access Application
+Get application URL
+Open in browser
+👉 Application runs successfully
+🔹 10. Update Application
+Go to environment
+Click Upload and Deploy
+Upload new version
+🔹 Final Output
+Application deployed successfully
+URL generated
+Auto scaling + load balancer handled automatically
+
+
+
+
+
+
+
+
+
+
+
+
+
 WEEK 10
 
 USING MAVEN GIT REPO
